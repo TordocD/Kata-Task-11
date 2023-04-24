@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrator page</title>
+</head>
+<body>
+
+<form id="logoutForm" method="POST" th:action="@{/logout}">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+
+<h5><a href="/user">Go to your profile</a> | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h5>
+
+    <h3>Users table</h3>
+
+    <table>
+
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Username</th>
+            <th>Roles</th>
+
+        </tr>
+        <tr th:each="oneUser: ${users}">
+            <td th:text="*{oneUser.id}"> </td>
+            <td th:text="*{oneUser.name}"> </td>
+            <td th:text="*{oneUser.surname}"> </td>
+            <td th:text="*{oneUser.age}"> </td>
+            <td th:text="*{oneUser.username}"> </td>
+            <td>
+                <table>
+                    <tr th:each="role: *{oneUser.roles}">
+                        <td th:text="*{role.roleName}">
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <form th:action="@{/admin/get_updated_user}" th:object="${user}" th:method="GET">
+                    <select hidden="hidden" th:field="*{id}" th:value="${oneUser.id}">
+                        <option th:value="${oneUser.id}"></option>
+                    </select>
+
+                    <select hidden="hidden" th:field="*{username}">
+                        <option th:value="${oneUser.username}"></option>
+                    </select>
+
+                    <select hidden="hidden" th:field="*{password}">
+                        <option th:value="${oneUser.password}"></option>
+                    </select>
+
+                    <select hidden="hidden" th:field="*{name}">
+                        <option th:value="${oneUser.name}"></option>
+                    </select>
+
+                    <select hidden="hidden" th:field="*{surname}">
+                        <option th:value="${oneUser.surname}"></option>
+                    </select>
+
+                    <select hidden="hidden" th:field="*{age}">
+                        <option th:value="${oneUser.age}"></option>
+                    </select>
+
+                    <button type="submit">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/admin/delete}" th:object="${user}" th:method="DELETE">
+                    <select hidden="hidden" th:field="*{id}">
+                        <option th:value="${oneUser.id}"></option>
+                    </select>
+                    <select hidden="hidden" th:field="*{username}" th:value="${oneUser.username}">
+                        <option th:value="${oneUser.username}"></option>
+                    </select>
+                    <button type="submit">Delete user</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Add user</h2>
+
+        <form th:action="@{/admin/add}" th:object="${user}" th:method="POST">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" required th:field="*{username}"><br />
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required th:field="*{password}"><br />
+
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required th:field="*{name}"><br />
+
+            <label for="surname">Surname</label>
+            <input id="surname" name="surname" type="text" required th:field="*{surname}"><br />
+
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" required th:field="*{age}"><br />
+
+            <label for="chosenRoles">Roles</label>
+            <select id="chosenRoles" name="chosenRoles" multiple="multiple">
+                <option th:each="role: ${allRoles}"
+                        th:value="${role.roleName}"
+                        th:text="${role.roleName}"></option>
+            </select><br />
+
+            <button type="submit">Add user</button>
+        </form>
+
+</body>
+</html>

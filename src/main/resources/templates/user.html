@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>User page</title>
+</head>
+<body>
+
+<form id="logoutForm" method="POST" th:action="@{/logout}">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</form>
+
+<h5>
+    <a sec:authorize="hasAuthority('ROLE_ADMIN')">
+        <a href="/admin">Go to admin`s panel</a>
+</a> | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
+</h5>
+
+
+<label for="username">Username: </label>
+<a id="username" th:text="${currentUser.username}" /> <br />
+
+<label for="name">Name: </label>
+<a id="name" th:text="${currentUser.name}" /> <br />
+
+<label for="surname">Surname: </label>
+<a id="surname" th:text="${currentUser.surname}" /> <br />
+
+<label for="age">Age: </label>
+<a id="age" th:text="${currentUser.age}" /> <br />
+
+<h3>Update data</h3>
+
+<form th:action="@{/user/update}" th:object="${currentUser}" th:method="PATCH">
+    <label for="updatedUsername">Username</label>
+    <input id="updatedUsername"
+           name="updatedUsername"
+           type="text"
+           th:field="*{username}"
+           th:value="*{username}"/> <br />
+
+    <label for="updatedName">Name</label>
+    <input id="updatedName"
+           name="updatedName"
+           type="text"
+           th:field="*{name}"
+           th:value="*{name}"/> <br />
+
+    <label for="updatedSurname">Surname</label>
+    <input id="updatedSurname"
+           name="updatedSurname"
+           type="text"
+           th:field="*{surname}"
+           th:value="*{surname}"/> <br />
+
+    <label for="updatedAge">Age</label>
+    <input id="updatedAge"
+           name="updatedAge"
+           type="number"
+           th:field="*{age}"
+           th:value="*{age}"/> <br />
+
+    <button type="submit">Update user</button>
+
+    <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{password}"/>
+</form>
+
+</body>
+</html>
