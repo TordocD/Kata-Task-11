@@ -31,7 +31,6 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("allRoles", roleService.getAllRoles());
         model.addAttribute("user", new User());
-        model.addAttribute("newRole", new Role());
 
         return "admin";
     }
@@ -80,9 +79,16 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @PatchMapping("/add_new_role")
-    public String addNewRole(@ModelAttribute Role newRole) {
-        roleService.add(newRole);
+    @PostMapping("/add_new_role")
+    public String addNewRole(@RequestParam String newRoleName) {
+        roleService.add(new Role(newRoleName));
+
+        return "redirect:/admin";
+    }
+
+    @DeleteMapping("/delete_role")
+    public String deleteRole(@RequestParam String deletedRoleName) {
+        roleService.deleteRoleByName(deletedRoleName);
 
         return "redirect:/admin";
     }

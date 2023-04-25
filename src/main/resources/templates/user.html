@@ -12,9 +12,9 @@
 </form>
 
 <h5>
-    <a sec:authorize="hasAuthority('ROLE_ADMIN')">
-        <a href="/admin">Go to admin`s panel</a>
-</a> | <a onclick="document.forms['logoutForm'].submit()">Logout</a>
+    <a sec:authorize="hasRole('ROLE_ADMIN')">
+        <a href="/admin">Go to admin`s panel</a> |
+</a>  <a onclick="document.forms['logoutForm'].submit()">Logout</a>
 </h5>
 
 

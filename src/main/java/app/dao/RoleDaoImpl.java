@@ -6,9 +6,7 @@ import app.model.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
@@ -23,8 +21,8 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public void deleteRoleByName(String roleName) {
-        entityManager.createQuery("DELETE Role WHERE roleName = :role")
-                .setParameter("role", roleName);
+        entityManager.createQuery("DELETE Role WHERE roleName = :roleName")
+                .setParameter("roleName", roleName).executeUpdate();
     }
 
     @Override

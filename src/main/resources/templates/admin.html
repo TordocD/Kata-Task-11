@@ -84,7 +84,7 @@
         </tr>
     </table>
 
-    <h2>Add user</h2>
+    <h3>Add user</h3>
 
         <form th:action="@{/admin/add}" th:object="${user}" th:method="POST">
             <label for="username">Username</label>
@@ -94,13 +94,13 @@
             <input id="password" name="password" type="password" required th:field="*{password}"><br />
 
             <label for="name">Name</label>
-            <input id="name" name="name" type="text" required th:field="*{name}"><br />
+            <input id="name" name="name" type="text" th:field="*{name}"><br />
 
             <label for="surname">Surname</label>
-            <input id="surname" name="surname" type="text" required th:field="*{surname}"><br />
+            <input id="surname" name="surname" type="text" th:field="*{surname}"><br />
 
             <label for="age">Age</label>
-            <input id="age" name="age" type="number" required th:field="*{age}"><br />
+            <input id="age" name="age" type="number" th:field="*{age}"><br />
 
             <label for="chosenRoles">Roles</label>
             <select id="chosenRoles" name="chosenRoles" multiple="multiple">
@@ -111,6 +111,22 @@
 
             <button type="submit">Add user</button>
         </form>
+
+<h3>Add new role</h3>
+<form th:action="@{/admin/add_new_role}" th:method="POST">
+    <input name="newRoleName" type="text" required />
+    <button type="submit">Add new role</button>
+</form>
+
+<h3>Delete role</h3>
+<form th:action="@{/admin/delete_role}" th:method="DELETE">
+    <select name="deletedRoleName">
+        <option th:each="role: ${allRoles}"
+                th:value="*{role.roleName}"
+                th:text="*{role.roleName}"></option>
+    </select>
+    <button type="submit">Delete role</button>
+</form>
 
 </body>
 </html>
