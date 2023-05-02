@@ -1,7 +1,6 @@
 package app.dao;
 
 import app.model.User;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
