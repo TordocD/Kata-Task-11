@@ -61,6 +61,10 @@
            th:field="*{age}"
            th:value="*{age}"/> <br />
 
+    <select th:each="role: *{roles}" name="chosenRoles" multiple hidden>
+        <option th:value="${role.roleName}" selected> </option>
+    </select>
+
     <button type="submit">Update user</button>
 
     <input type="hidden" th:field="*{id}"/>

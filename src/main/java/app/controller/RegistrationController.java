@@ -1,5 +1,6 @@
 package app.controller;
 
+
 import app.model.User;
 import app.service.RoleService;
 import app.service.UserService;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RegistrationController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping()
@@ -29,6 +32,7 @@ public class RegistrationController {
 
     @PostMapping( "/register")
     public String register(@ModelAttribute User user, Model model) {
+        user.setRoles(roleService.getRoleSingletonSetByName("ROLE_USER"));
         if (!userService.saveUser(user)) {
             model.addAttribute("usernameError", "User is already exists");
             return "/registration";

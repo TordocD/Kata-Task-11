@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,6 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleDao roleDao;
 
-    @Autowired
     public RoleServiceImpl(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
@@ -35,6 +35,12 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(readOnly = true)
     public Role getByName(String name) {
         return roleDao.getByName(name);
+    }
+
+    @Override
+    @Transactional
+    public Set<Role> getRoleSingletonSetByName(String roleName) {
+        return Collections.singleton(getByName(roleName));
     }
 
     @Override

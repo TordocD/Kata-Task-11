@@ -1,6 +1,7 @@
 package app.dao;
 
 import app.model.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -43,7 +44,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getByUsername(String username) {
         try {
-            return entityManager.createQuery("FROM User WHERE username= :username", User.class)
+            return entityManager
+                    .createQuery("SELECT user FROM User user LEFT JOIN FETCH user.roles WHERE user.username=:username",
+                            User.class)
                     .setParameter("username", username).getSingleResult();
         } catch (Exception e) {
             return null;

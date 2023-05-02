@@ -3,13 +3,14 @@ package app.service;
 import app.dao.UserDao;
 import app.model.Role;
 import app.model.User;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -18,14 +19,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDao userDao;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    private final RoleService roleService;
 
 
 
 
-    public UserServiceImpl(UserDao userDao, RoleService roleService) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
-        this.roleService = roleService;
     }
 
     @Override
@@ -62,7 +61,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } catch (Exception e) {
             // empty
         }
-        user.setRoles(Collections.singleton(roleService.getByName("ROLE_USER")));
         user.setPassword(encoder.encode(user.getPassword()));
         add(user);
         return true;
@@ -93,7 +91,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void updateUser(User newUser) {
-        newUser.setRoles(Collections.singleton(roleService.getByName("ROLE_USER")));
         userDao.updateUser(newUser);
     }
 
@@ -109,6 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
+
         return user;
     }
 }

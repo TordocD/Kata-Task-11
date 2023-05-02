@@ -5,7 +5,6 @@ import app.model.User;
 import app.service.UserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 @Component
@@ -17,7 +16,6 @@ public class InitData {
         this.userService = userService;
     }
 
-    @Transactional
     @PostConstruct
     public void init() {
         Set<Role> roles = Set.of(new Role("ROLE_ADMIN"), new Role("ROLE_USER"));

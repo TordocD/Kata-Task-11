@@ -1,26 +1,26 @@
 package app.controller;
 
+import app.model.Role;
 import app.model.User;
+import app.service.RoleService;
 import app.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashSet;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    @Autowired
-    public UserController (UserService userService) {
+    public UserController (UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping()
@@ -31,7 +31,14 @@ public class UserController {
     }
 
     @PatchMapping("/update")
-    public String updateUser(@ModelAttribute User currentUser) {
+    public String updateUser(@ModelAttribute User currentUser,
+                             @RequestParam HashSet<String> chosenRoles) {
+        HashSet<Role> roles = new HashSet<>();
+        for (String currentRole: chosenRoles) {
+            Role role = roleService.getByName(currentRole);
+            roles.add(role);
+        }
+        currentUser.setRoles(roles);
         userService.updateUser(currentUser);
 
         return "redirect:/user";

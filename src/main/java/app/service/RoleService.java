@@ -10,5 +10,6 @@ public interface RoleService {
     void add(Role role);
     void deleteRoleByName(String roleName);
     Role getByName(String name);
-    public Set<Role> getAllRoles();
+    Set<Role> getAllRoles();
+    Set<Role> getRoleSingletonSetByName(String roleName);
 }
