@@ -21,7 +21,7 @@ public class InitData {
         Set<Role> roles = Set.of(new Role("ROLE_ADMIN"), new Role("ROLE_USER"));
 
         if (userService.getByUsername("admin") == null) {
-            userService.saveUserWithNewAuthority(new User("admin", "admin"), roles);
+            userService.saveUser(new User("admin", "admin", roles));
         }
     }
 }

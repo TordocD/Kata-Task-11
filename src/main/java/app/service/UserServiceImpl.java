@@ -43,40 +43,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDao.deleteById(id);
     }
 
-    @Override
-    @Transactional
-    public void add(User user) {
-        userDao.add(user);
-    }
-
     @Transactional
     @Override
     public boolean saveUser(User user) {
-        try {
-            if (getByUsername(user.getUsername()) != null) {
-                return false;
-            }
-        } catch (Exception e) {
-            // empty
+        if (getByUsername(user.getUsername()) != null) {
+            return false;
         }
-        user.setPassword(encoder.encode(user.getPassword()));
-        add(user);
-        return true;
-    }
 
-    @Transactional
-    @Override
-    public boolean saveUserWithNewAuthority(User user, Set<Role> roles) {
-        try {
-            if (getByUsername(user.getUsername()) != null) {
-                return false;
-            }
-        } catch (Exception e) {
-            // empty
-        }
-        user.setRoles(roles);
         user.setPassword(encoder.encode(user.getPassword()));
-        add(user);
+        userDao.add(user);
         return true;
     }
 
@@ -89,6 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void updateUser(User newUser) {
+        newUser.setPassword(encoder.encode(newUser.getPassword()));
         userDao.updateUser(newUser);
     }
 
